@@ -1,14 +1,25 @@
 //
 // A simple mono-band WSPR beacon using an si5351 breakout for clock synthesis and a Ublox 6M for time sync. 
-// Paul Taylor  VK3HN   
+// The beacon can be built with only an Arduino Nano or Uno, si5351 breakout, and Ublox GPS. The 16x2 Liquid Crystal
+// Display is optional, but recommended, as it provides a realtime clock and interesting status information. 
 //
+// Paul Taylor  VK3HN   
 // For a Blog post write-up see: https://vk3hn.wordpress.com/2021/10/04/20-meters-200mw-12000-miles-wspr-magic/
 //
 // The WSPR code is copied from Software for Zachtek "WSPR-TX_LP1 Version 1"
 //    https://github.com/HarrydeBug/1011-WSPR-TX_LP1 
 //
-//  4 Oct 2021  Version 1.0  Initial working version.    
+// The recommended libraries are as follows:
+//  - JTEncode  https://github.com/etherkit/JTEncode 
+//    (takes a data structure with your WSPR parameters and encodes it for sending to si5351)
+//  - si5351  https://github.com/etherkit/Si5351Arduino
+//    (general purpose si5351 library).  
 //
+// It is recommended to calibrate your si5351, as in my experience these boards can be up to 500Hz off frequency,
+// depending on the crystal. Follow the calibration instructions with Jason's library. 
+//
+//  
+//  4 Oct 2021  Version 1.0  Initial working version.
 
 #include <SoftwareSerial.h>
 #include <LiquidCrystal.h>
@@ -273,7 +284,7 @@ void setup()
   pinMode(GPS_TX_PIN, OUTPUT);
   random(RandomSeed());
 
-  // set up WSPR transmit data
+  // set up your personalised WSPR transmit data, otherwise you will impersonate me!
   WSPRData.CallSign[0] = 'V';    
   WSPRData.CallSign[1] = 'K';    
   WSPRData.CallSign[2] = '3';    
@@ -282,16 +293,25 @@ void setup()
   WSPRData.CallSign[5] = 0;    
   WSPRData.CallSign[6] = 0;    
   WSPRData.LocatorOption = GPS; 
-  WSPRData.MaidenHead4[0] = 'Q';          //Maidenhead locator, must be 4 chars and a zero termination
+  WSPRData.MaidenHead4[0] = 'Q';  //Maidenhead locator, must be 4 chars and a zero termination
   WSPRData.MaidenHead4[1] = 'F';             
   WSPRData.MaidenHead4[2] = '2';             
   WSPRData.MaidenHead4[3] = '2';             
   WSPRData.MaidenHead4[4] = 0;             
-  WSPRData.TXPowerdBm = 23;              // 200mW   Power data in dBm min=0 max=60, set to 20dBm 100mW
+  WSPRData.TXPowerdBm = 23;       // 200mW   Power data in dBm min=0 max=60, set to 23dBm 200mW
 
   // set up the si5351
   si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);        // (0 is the default xtal freq of 25Mhz)
-  si5351.set_correction(19100);                      // trim the onboard oscillator
+
+  // trim the onboard oscillator's frequency, using the etherkit 'examples/si5351_calibrate.ino' script 
+  // Ssee Jason's instructions, it is easy! The calibrate script gives you an unsigned integer offset, 
+  // place this as first argument to set_correction() below   
+  // 
+  // NOTE: There was a library change to the signature of this method. If you get a compiler error, try this:
+  // si5351.set_correction(19100, SI5351_PLL_INPUT_XO);
+
+  si5351.set_correction(19100); 
+ 
   si5351.set_pll(SI5351_PLL_FIXED, SI5351_PLLA);
 }
 
