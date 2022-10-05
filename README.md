@@ -5,6 +5,8 @@ For a Blog post write-up see: https://vk3hn.wordpress.com/2021/10/04/20-meters-2
 
 The WSPR control code was sourced from Zachtek at  https://github.com/HarrydeBug/1011-WSPR-TX_LP1
 
+This project was published in short form in the RSGB QRP Club's SPRAT, issue 192, Autumn 2022.
+
 Libraries:
 #include <SoftwareSerial.h>
 #include <LiquidCrystal.h>
