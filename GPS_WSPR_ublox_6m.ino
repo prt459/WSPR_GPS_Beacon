@@ -18,7 +18,16 @@
 // It is recommended to calibrate your si5351, as in my experience these boards can be up to 500Hz off frequency,
 // depending on the crystal. Follow the calibration instructions with Jason's library. 
 //
-//  
+//  Liquid Crystal Display connections:
+//    LCD Reset (RS)  (LCD pin 4)     goes to   D8  (Nano pin 11)  
+//    LCD Enable (E)  (LCD pin 6)     goes to   D9  (Nano pin 12)  
+//    LCD Data 4 (D4) (LCD pin 11)    goes to   D10 (Nano pin 13)  
+//    LCD Data 5 (D5) (LCD pin 12)    goes to   D11 (Nano pin 14)  
+//    LCD Data 6 (D6) (LCD pin 13)    goes to   D12 (Nano pin 15)  
+//    LCD Data 7 (D7) (LCD pin 14)    goes to   D13 (Nano pin 16)  
+//  For a schematic of the full LCD wiring, see:  https://vk3hn.files.wordpress.com/2020/07/ssdrap203-page3.pdf
+//
+//
 //  4 Oct 2021  Version 1.0  Initial working version.
 
 #include <SoftwareSerial.h>
