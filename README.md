@@ -52,4 +52,5 @@ The UBlox 6M unit flashes its LED when it has detected a few satellites. If you 
 or NMEA strings on the console, try moving the whole thing to a spot where it has a fighting chance of receiving satellites, so on a window ledge,
 or better still, outside.  My UBlox does not decode anything on the shack bench which is under a metal roof, but does work next to the window.    
 
-If after all of this Letyou are still having problems, you are welcome to email me. Good luck!   
+# Help
+If after all of this you are still having problems, you are welcome to email me. Good luck!   
